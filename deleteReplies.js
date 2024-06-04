@@ -4,18 +4,18 @@ const { ApiResponseError } = require('twitter-api-v2');
 const deleteReplies = async () => {
   const user = await twitter.v2.me();
   const replies = await twitter.v2.userTimeline(user.data.id, { 
-    'tweet.fields': 'created_at', 
+    'tweet.fields': 'created_at,in_reply_to_user_id', 
     'exclude': 'retweets' 
   });
 
   let deletedCount = 0;
 
-  for await (const reply of replies) {
+  for await (const tweet of replies) {
     try {
-      if (reply.in_reply_to_status_id && Date.parse(reply.created_at) <= treshold) {
-        console.log(`Deleting reply ${reply.id}`);
+      if (tweet.in_reply_to_user_id && Date.parse(tweet.created_at) <= treshold) {
+        console.log(`Deleting reply ${tweet.id}`);
 
-        await twitter.v1.deleteTweet(reply.id_str);
+        await twitter.v1.deleteTweet(tweet.id_str);
         deletedCount++;
       }
     } catch (error) {
@@ -25,7 +25,7 @@ const deleteReplies = async () => {
         continue;
       }
 
-      throw error;
+      console.error(`Failed to delete reply ${tweet.id}: ${error.message}`);
     }
   }
 
