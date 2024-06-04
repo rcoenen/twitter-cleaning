@@ -1,4 +1,4 @@
-name: Delete old retweets (fixed)
+name: Delete old retweets
 
 on:
   workflow_dispatch:  # Allows manual triggering of the workflow
