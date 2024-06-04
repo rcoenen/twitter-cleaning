@@ -10,12 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: yarn install
-      - run: yarn replies
+          
+      - name: Install dependencies
+        run: yarn install
+        
+      - name: Run deleteReplies script
+        run: yarn replies
         env:
           TWITTER_KEY: ${{ secrets.TWITTER_KEY }}
           TWITTER_SECRET: ${{ secrets.TWITTER_SECRET }}

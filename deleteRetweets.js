@@ -5,8 +5,10 @@ const deleteRetweets = async () => {
   const user = await twitter.v2.me();
   const retweets = await twitter.v2.userTimeline(user.data.id, { 
     'tweet.fields': 'created_at', 
-    'exclude': 'retweets,replies' 
+    'exclude': 'tweets' 
   });
+
+  let deletedCount = 0;
 
   for await (const tweet of retweets) {
     try {
@@ -14,6 +16,7 @@ const deleteRetweets = async () => {
         console.log(`Deleting retweet ${tweet.id}`);
 
         await twitter.v1.deleteTweet(tweet.id_str);
+        deletedCount++;
       }
     } catch (error) {
       if (error instanceof ApiResponseError && error.rateLimitError && error.rateLimit) {
@@ -25,6 +28,8 @@ const deleteRetweets = async () => {
       throw error;
     }
   }
+
+  console.log(`Deleted ${deletedCount} retweets`);
 }
 
 deleteRetweets().catch((e) => console.log(e));
