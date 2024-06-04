@@ -9,7 +9,9 @@
   },
   "scripts": {
     "tweets": "node tweets.js",
-    "likes": "node likes.js"
+    "likes": "node likes.js",
+    "retweets": "node deleteRetweets.js",
+    "replies": "node deleteReplies.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

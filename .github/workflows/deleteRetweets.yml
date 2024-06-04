@@ -1,6 +1,7 @@
 name: Delete old retweets
 
 on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
   schedule:
     - cron: '0 0 * * *'  # Runs daily at midnight UTC
 
@@ -14,10 +15,9 @@ jobs:
         with:
           node-version: '20'
       - run: yarn install
-      - run: node deleteRetweets.js
+      - run: yarn retweets
         env:
           TWITTER_KEY: ${{ secrets.TWITTER_KEY }}
           TWITTER_SECRET: ${{ secrets.TWITTER_SECRET }}
           TWITTER_ACCESS_TOKEN_KEY: ${{ secrets.TWITTER_ACCESS_TOKEN_KEY }}
-          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-          DELETE_AFTER_DAYS: ${{ secrets.DELETE_AFTER_DAYS }}
+          T
